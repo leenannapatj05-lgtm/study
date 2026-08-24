@@ -1,0 +1,393 @@
+<!DOCTYPE html><html class="light" lang="th"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>แดชบอร์ด StudySync AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-container": "#008392",
+                      "on-surface": "#1b1b1c",
+                      "surface-tint": "#005bc0",
+                      "secondary": "#5d5f5f",
+                      "on-primary-container": "#ffffff",
+                      "primary-fixed-dim": "#adc7ff",
+                      "on-error-container": "#93000a",
+                      "surface-container-low": "#f6f3f2",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-bright": "#fcf9f8",
+                      "on-primary": "#ffffff",
+                      "primary": "#005bbf",
+                      "on-secondary-container": "#616363",
+                      "surface-container-highest": "#e5e2e1",
+                      "on-primary-fixed": "#001a41",
+                      "tertiary-fixed": "#9cf0ff",
+                      "outline-variant": "#c1c6d6",
+                      "surface-container-high": "#eae7e7",
+                      "on-error": "#ffffff",
+                      "surface-dim": "#dcd9d9",
+                      "on-background": "#1b1b1c",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "surface-variant": "#e5e2e1",
+                      "surface-container": "#f0eded",
+                      "on-tertiary-fixed-variant": "#004f58",
+                      "tertiary": "#006875",
+                      "on-tertiary-fixed": "#001f24",
+                      "on-surface-variant": "#414754",
+                      "on-primary-fixed-variant": "#004493",
+                      "primary-fixed": "#d8e2ff",
+                      "inverse-surface": "#303030",
+                      "error": "#ba1a1a",
+                      "primary-container": "#1a73e8",
+                      "on-tertiary": "#ffffff",
+                      "inverse-on-surface": "#f3f0ef",
+                      "background": "#fcf9f8",
+                      "tertiary-fixed-dim": "#00daf3",
+                      "on-secondary-fixed-variant": "#454747",
+                      "secondary-fixed-dim": "#c6c6c7",
+                      "error-container": "#ffdad6",
+                      "surface": "#fcf9f8",
+                      "on-tertiary-container": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "secondary-fixed": "#e2e2e2",
+                      "secondary-container": "#dfe0e0",
+                      "outline": "#727785",
+                      "inverse-primary": "#adc7ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "xl": "32px",
+                      "margin-desktop": "32px",
+                      "margin-mobile": "16px",
+                      "base": "4px",
+                      "lg": "24px",
+                      "gutter": "16px",
+                      "sm": "8px",
+                      "md": "16px"
+              },
+              "fontFamily": {
+                      "label-lg": ["Kanit"],
+                      "headline-lg-mobile": ["Kanit"],
+                      "body-lg": ["Kanit"],
+                      "headline-lg": ["Kanit"],
+                      "body-md": ["Kanit"],
+                      "label-sm": ["Kanit"],
+                      "display-lg": ["Kanit"],
+                      "title-lg": ["Kanit"]
+              },
+              "fontSize": {
+                      "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "letterSpacing": "0px", "fontWeight": "500"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0.5px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "0px", "fontWeight": "500"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.25px", "fontWeight": "400"}],
+                      "label-sm": ["11px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                      "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "600"}],
+                      "title-lg": ["22px", {"lineHeight": "28px", "letterSpacing": "0px", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+      </script>
+    <style>
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+        @media (max-width: 1024px) {
+            .nav-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            .nav-sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0 !important;
+                width: 100% !important;
+            }
+            .top-navbar {
+                width: 100% !important;
+                left: 0 !important;
+            }
+        }
+    </style>
+    <!-- Supabase SDK & Client Initialization -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./supabase_client.js"></script>
+</head>
+<body class="bg-background text-on-background font-body-lg text-body-lg min-h-screen flex pb-20 md:pb-0">
+<!-- Mobile Overlay -->
+<div class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden" id="mobile-overlay" onclick="toggleSidebar()"></div>
+<!-- SideNavBar -->
+<nav class="nav-sidebar h-screen w-64 fixed left-0 top-0 bg-surface-container dark:bg-surface-container-low border-r border-outline-variant dark:border-outline shadow-sm dark:shadow-none z-40 lg:translate-x-0" id="sidebar">
+<div class="flex flex-col h-full py-lg">
+<div class="px-6 mb-8 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img alt="โลโก้องค์กร" class="w-10 h-10 rounded-lg object-cover" data-alt="โลโก้แนวเรขาคณิตที่สะอาดตาและทันสมัย" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-N9fQUe3FA1ovieTGHQ7Pvflfg2rbfMLq7L4VOVkkdi-YCvTIooY3tHQBDwm5zlQN5-WvCQ6Cp5SPMNv2YYpPasExDbzg3DtWFaUWFUsGNjlOABu0WX4mMsOSU5WiQ8mqDc5r0lQkzhpCxrx0FRh8OXCVysfLa-0SLpzdqcpxSIurUD7Nso30HoGwg3_qfAFlVctawXuw0_Z_H4cpOpaipmPlNaaAuqkVWjMn4EGFkOI1DZRpGR3P7NJrx_wNadkPjWBM1AODBMzD">
+<div>
+<h1 class="font-headline-lg text-headline-lg font-black text-primary dark:text-primary-fixed text-xl leading-none">StudySync AI</h1>
+<span class="font-label-sm text-label-sm text-on-surface-variant">แพลตฟอร์มจัดการการเรียน</span>
+</div>
+</div>
+<button class="lg:hidden text-on-surface-variant p-1" onclick="toggleSidebar()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<ul class="flex flex-col gap-1 w-full flex-grow">
+<li class="">
+<a class="flex items-center gap-3 px-4 py-3 text-primary dark:text-primary-fixed-dim bg-primary-container/10 border-l-4 border-primary dark:border-primary-fixed-dim font-label-lg text-label-lg transition-all duration-200 ease-in-out active:scale-95" href="dashboard.html">
+<span class="material-symbols-outlined">dashboard</span>
+                        แผงควบคุม
+                    </a>
+</li>
+<li class="">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-high font-label-lg text-label-lg transition-all duration-200 ease-in-out active:scale-95" href="study_logs.html">
+<span class="material-symbols-outlined">assignment</span>
+                        บันทึกการเรียน
+                    </a>
+</li>
+<li class="">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-high font-label-lg text-label-lg transition-all duration-200 ease-in-out active:scale-95" href="assignments.html"><span class="material-symbols-outlined">task_alt</span>
+                        งานและการสอบ</a>
+</li>
+<li class="">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-high font-label-lg text-label-lg transition-all duration-200 ease-in-out active:scale-95" href="files.html">
+<span class="material-symbols-outlined">folder</span>
+                        จัดการไฟล์
+                    </a>
+</li>
+<li class="">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-high font-label-lg text-label-lg transition-all duration-200 ease-in-out active:scale-95" href="settings.html">
+<span class="material-symbols-outlined">settings</span>
+                        ตั้งค่า
+                    </a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- TopNavBar -->
+<header class="top-navbar fixed top-0 right-0 w-[calc(100%-16rem)] h-16 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline shadow-sm z-30 transition-all duration-300">
+<div class="flex justify-between items-center px-4 md:px-margin-desktop w-full h-full">
+<div class="flex items-center gap-4 flex-1">
+<button class="lg:hidden text-on-surface-variant p-2 hover:bg-surface-variant rounded-full" onclick="toggleSidebar()">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="relative w-full max-w-xs focus-within:ring-2 focus-within:ring-primary rounded-full transition-all hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container rounded-full border-none focus:ring-0 font-body-md text-body-md text-on-surface placeholder-on-surface-variant" placeholder="ค้นหาข้อมูล..." type="text">
+</div>
+<button class="sm:hidden text-on-surface-variant p-2">
+<span class="material-symbols-outlined">search</span>
+</button>
+</div>
+<div class="flex items-center gap-1 sm:gap-2">
+<button class="text-on-surface-variant hover:bg-surface-variant dark:hover:bg-on-surface-variant/10 rounded-full p-2 transition-all" title="การแจ้งเตือน">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-variant dark:hover:bg-on-surface-variant/10 rounded-full p-2 transition-all hidden sm:block" title="ความช่วยเหลือ">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<img alt="รูปโปรไฟล์ผู้ใช้" class="w-8 h-8 rounded-full ml-2 sm:ml-4 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCm9nHWAf1jKBJA6hCpEYBQl6uz9KF5v200bM2nqCyhiBwOo5xP6BfiRcbUKspib2QWIZDW8koTPQE5l8E1BeCQQAV666Aud5LielIMfSycggPIvhvdJuARtEHr278qEP5rH9TM0v3GUgOIS74ISYO1n-CI4ycZlgshsCvwDBz-zT1I1zSWFyi06t4isqVkgV9r0S1ram7ylscXwMQ5SHAjgJd389nlKuA_YLxbEGF-3os-lU0WLdu4Lc5piu8Rhpa_ZL7F3rpt_hgs">
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="main-content ml-64 mt-16 p-4 md:p-margin-desktop w-full max-w-[1440px] mx-auto min-h-[calc(100vh-64px)] transition-all duration-300">
+<header class="mb-8">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">ยินดีต้อนรับกลับ, สมใจ</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">นี่คือภาพรวมของแผนการศึกษาและงานที่คุณกำลังดำเนินการอยู่</p>
+</header>
+<!-- Metrics Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
+<!-- Card 1 -->
+<div class="bg-surface rounded-xl p-6 border border-outline-variant/50 shadow-sm relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-label-lg text-label-lg text-on-surface-variant">ชั่วโมงเรียนรวม</h3>
+<span class="material-symbols-outlined text-primary">schedule</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl md:text-5xl font-semibold text-on-surface">124</span>
+<span class="font-label-sm text-label-sm text-tertiary">+12% สัปดาห์นี้</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface rounded-xl p-6 border border-outline-variant/50 shadow-sm relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-error/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-label-lg text-label-lg text-on-surface-variant">งานค้าง</h3>
+<span class="material-symbols-outlined text-error">assignment_late</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl md:text-5xl font-semibold text-on-surface">8</span>
+<span class="font-label-sm text-label-sm text-error">3 งานด่วนพิเศษ</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface rounded-xl p-6 border border-outline-variant/50 shadow-sm relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-tertiary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-label-lg text-label-lg text-on-surface-variant">การสอบที่จะถึง</h3>
+<span class="material-symbols-outlined text-tertiary">event</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl md:text-5xl font-semibold text-on-surface">2</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">สอบครั้งต่อไปใน 4 วัน</span>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface rounded-xl p-6 border border-outline-variant/50 shadow-sm relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary-container/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-label-lg text-label-lg text-on-surface-variant">คะแนนเฉลี่ย</h3>
+<span class="material-symbols-outlined text-primary">analytics</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl md:text-5xl font-semibold text-on-surface">92%</span>
+<span class="font-label-sm text-label-sm text-tertiary">ติดอันดับ 10% แรก</span>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Chart Area (Spans 2 columns) -->
+<div class="lg:col-span-2 bg-surface rounded-xl p-4 md:p-6 border border-outline-variant/50 shadow-sm overflow-hidden">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6">
+<h3 class="font-title-lg text-title-lg text-on-surface">ชั่วโมงการเรียนรายสัปดาห์</h3>
+<button class="text-primary font-label-lg text-label-lg hover:underline flex items-center gap-1">
+                        ดูรายงานฉบับเต็ม
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<!-- Mock Chart Container -->
+<div class="overflow-x-auto">
+<div class="min-w-[400px] md:min-w-0">
+<div class="h-48 md:h-64 flex items-end justify-between gap-2 relative">
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20">
+<div class="border-t border-outline-variant w-full h-0"></div>
+<div class="border-t border-outline-variant w-full h-0"></div>
+<div class="border-t border-outline-variant w-full h-0"></div>
+<div class="border-t border-outline-variant w-full h-0"></div>
+</div>
+<!-- Bars -->
+<div class="w-full bg-primary-container/20 rounded-t-sm h-[40%] relative group cursor-pointer transition-all hover:bg-primary-container/40">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">จันทร์: 4 ชม.</div>
+</div>
+<div class="w-full bg-primary rounded-t-sm h-[70%] relative group cursor-pointer shadow-[0_0_15px_rgba(0,91,191,0.3)] transition-all hover:bg-primary/90">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">อังคาร: 7 ชม.</div>
+</div>
+<div class="w-full bg-primary-container/20 rounded-t-sm h-[50%] relative group cursor-pointer transition-all hover:bg-primary-container/40">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">พุธ: 5 ชม.</div>
+</div>
+<div class="w-full bg-primary-container/20 rounded-t-sm h-[85%] relative group cursor-pointer transition-all hover:bg-primary-container/40">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">พฤหัสบดี: 8.5 ชม.</div>
+</div>
+<div class="w-full bg-primary-container/20 rounded-t-sm h-[30%] relative group cursor-pointer transition-all hover:bg-primary-container/40">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">ศุกร์: 3 ชม.</div>
+</div>
+<div class="w-full bg-primary-container/20 rounded-t-sm h-[60%] relative group cursor-pointer transition-all hover:bg-primary-container/40">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">เสาร์: 6 ชม.</div>
+</div>
+<div class="w-full bg-primary-container/20 rounded-t-sm h-[20%] relative group cursor-pointer transition-all hover:bg-primary-container/40">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">อาทิตย์: 2 ชม.</div>
+</div>
+</div>
+<div class="flex justify-between mt-2 font-label-sm text-label-sm text-on-surface-variant px-1">
+<span class="">จ</span><span class="">อ</span><span class="">พ</span><span class="">พฤ</span><span class="">ศ</span><span class="">ส</span><span class="">อา</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Activity List (Spans 1 column) -->
+<div class="bg-surface rounded-xl p-4 md:p-6 border border-outline-variant/50 shadow-sm flex flex-col">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-6">กิจกรรมล่าสุด</h3>
+<div class="flex-grow space-y-4 overflow-y-auto pr-2 max-h-[300px] md:max-h-none">
+<!-- Item 1 -->
+<div class="flex gap-4 items-start pb-4 border-b border-outline-variant/30">
+<div class="w-8 h-8 rounded-full bg-primary-container/20 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-sm">edit_document</span>
+</div>
+<div class="flex-grow min-w-0">
+<p class="font-body-md text-body-md text-on-surface truncate">ทำการบ้าน <span class="font-label-lg font-semibold">คณิตศาสตร์เสริม</span> เสร็จแล้ว</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2 ชั่วโมงที่แล้ว</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex gap-4 items-start pb-4 border-b border-outline-variant/30">
+<div class="w-8 h-8 rounded-full bg-tertiary/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-tertiary text-sm">check_circle</span>
+</div>
+<div class="flex-grow min-w-0">
+<p class="font-body-md text-body-md text-on-surface truncate">เรียนจบโมดูล <span class="font-label-lg font-semibold">ชีวสถิติ 101</span> แล้ว</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">5 ชั่วโมงที่แล้ว</span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex gap-4 items-start pb-4 border-b border-outline-variant/30">
+<div class="w-8 h-8 rounded-full bg-error/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-error text-sm">warning</span>
+</div>
+<div class="flex-grow min-w-0">
+<p class="font-body-md text-body-md text-on-surface truncate">คะแนนสอบกลางภาค <span class="font-label-lg font-semibold">ฟิสิกส์</span> ออกแล้ว</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">เมื่อวานนี้</span>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="flex gap-4 items-start">
+<div class="w-8 h-8 rounded-full bg-primary-container/20 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-sm">upload_file</span>
+</div>
+<div class="flex-grow min-w-0">
+<p class="font-body-md text-body-md text-on-surface truncate">อัปโหลดไฟล์ PDF สรุปวิชาเคมี</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">เมื่อวานนี้</span>
+</div>
+</div>
+</div>
+<button class="mt-4 w-full py-2 border border-outline rounded-lg text-primary font-label-lg text-label-lg hover:bg-surface-variant transition-colors">
+                    ดูรายงานฉบับเต็ม
+                </button>
+</div>
+</div>
+</main>
+<!-- Bottom NavBar (Mobile) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-2 pb-safe lg:hidden bg-surface dark:bg-surface-dim border-t border-outline-variant shadow-lg rounded-t-xl">
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-2xl px-4 py-1 active:scale-95 transition-transform w-full" href="dashboard.html">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-sm text-label-sm font-bold mt-1">หน้าแรก</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest active:scale-95 transition-transform w-full py-2" href="study_logs.html">
+<span class="material-symbols-outlined mb-1">calendar_today</span>
+<span class="font-label-sm text-label-sm mt-1">บันทึก</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest active:scale-95 transition-transform w-full py-2" href="assignments.html">
+<span class="material-symbols-outlined mb-1">task_alt</span>
+<span class="font-label-sm text-label-sm mt-1">งานและการสอบ</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest active:scale-95 transition-transform w-full py-2" href="files.html">
+<span class="material-symbols-outlined mb-1">drive_file_move</span>
+<span class="font-label-sm text-label-sm mt-1">จัดการไฟล์</span>
+</a>
+</nav>
+<script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('hidden');
+        }
+    </script>
+
+
+
+
+</body></html>

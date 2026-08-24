@@ -1,0 +1,362 @@
+<!DOCTYPE html><html class="light" lang="th"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>StudySync AI - จัดการไฟล์</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-container": "#008392",
+                      "on-surface": "#1b1b1c",
+                      "surface-tint": "#005bc0",
+                      "secondary": "#5d5f5f",
+                      "on-primary-container": "#ffffff",
+                      "primary-fixed-dim": "#adc7ff",
+                      "on-error-container": "#93000a",
+                      "surface-container-low": "#f6f3f2",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-bright": "#fcf9f8",
+                      "on-primary": "#ffffff",
+                      "primary": "#005bbf",
+                      "on-secondary-container": "#616363",
+                      "surface-container-highest": "#e5e2e1",
+                      "on-primary-fixed": "#001a41",
+                      "tertiary-fixed": "#9cf0ff",
+                      "outline-variant": "#c1c6d6",
+                      "surface-container-high": "#eae7e7",
+                      "on-error": "#ffffff",
+                      "surface-dim": "#dcd9d9",
+                      "on-background": "#1b1b1c",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "surface-variant": "#e5e2e1",
+                      "surface-container": "#f0eded",
+                      "on-tertiary-fixed-variant": "#004f58",
+                      "tertiary": "#006875",
+                      "on-tertiary-fixed": "#001f24",
+                      "on-surface-variant": "#414754",
+                      "on-primary-fixed-variant": "#004493",
+                      "primary-fixed": "#d8e2ff",
+                      "inverse-surface": "#303030",
+                      "error": "#ba1a1a",
+                      "primary-container": "#1a73e8",
+                      "on-tertiary": "#ffffff",
+                      "inverse-on-surface": "#f3f0ef",
+                      "background": "#fcf9f8",
+                      "tertiary-fixed-dim": "#00daf3",
+                      "on-secondary-fixed-variant": "#454747",
+                      "secondary-fixed-dim": "#c6c6c7",
+                      "error-container": "#ffdad6",
+                      "surface": "#fcf9f8",
+                      "on-tertiary-container": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "secondary-fixed": "#e2e2e2",
+                      "secondary-container": "#dfe0e0",
+                      "outline": "#727785",
+                      "inverse-primary": "#adc7ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "xl": "32px",
+                      "margin-desktop": "32px",
+                      "margin-mobile": "16px",
+                      "base": "4px",
+                      "lg": "24px",
+                      "gutter": "16px",
+                      "sm": "8px",
+                      "md": "16px"
+              },
+              "fontFamily": {
+                      "label-lg": ["Kanit"],
+                      "headline-lg-mobile": ["Kanit"],
+                      "body-lg": ["Kanit"],
+                      "headline-lg": ["Kanit"],
+                      "body-md": ["Kanit"],
+                      "label-sm": ["Kanit"],
+                      "display-lg": ["Kanit"],
+                      "title-lg": ["Kanit"]
+              },
+              "fontSize": {
+                      "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "letterSpacing": "0px", "fontWeight": "500"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0.5px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "0px", "fontWeight": "500"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.25px", "fontWeight": "400"}],
+                      "label-sm": ["11px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                      "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "600"}],
+                      "title-lg": ["22px", {"lineHeight": "28px", "letterSpacing": "0px", "fontWeight": "500"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1;
+        }
+        @media (max-width: 768px) {
+            .file-table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+        /* Mobile Drawer State */
+        #mobile-drawer-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #mobile-drawer {
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        body.drawer-open #mobile-drawer-overlay {
+            opacity: 1;
+            visibility: visible;
+        }
+        body.drawer-open #mobile-drawer {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-lg antialiased min-h-screen flex flex-col md:flex-row pb-20 md:pb-0">
+<!-- Mobile Drawer Overlay -->
+<div class="fixed inset-0 bg-black/50 z-50 md:hidden" id="mobile-drawer-overlay" onclick="toggleDrawer()"></div>
+<!-- Mobile Navigation Drawer -->
+<nav class="fixed inset-y-0 left-0 w-[280px] bg-surface-container-low border-r border-outline-variant z-50 md:hidden flex flex-col py-lg space-y-base shadow-xl" id="mobile-drawer">
+<div class="px-6 py-4">
+<h1 class="font-title-lg text-title-lg text-primary tracking-tight">StudySync AI</h1>
+</div>
+<div class="flex flex-col py-lg space-y-base flex-1 overflow-y-auto px-4">
+<a class="text-on-surface-variant hover:bg-surface-container-high rounded-full mx-2 transition-all duration-200 ease-in-out flex items-center px-4 py-3 gap-3" href="dashboard.html"><span class="material-symbols-outlined" data-icon="dashboard">dashboard</span><span class="font-label-lg text-label-lg">แผงควบคุม</span></a>
+<a class="text-on-surface-variant hover:bg-surface-container-high rounded-full mx-2 transition-all duration-200 ease-in-out flex items-center px-4 py-3 gap-3" href="study_logs.html">
+<span class="material-symbols-outlined" data-icon="event_note">event_note</span>
+<span class="font-label-lg text-label-lg">บันทึกการเรียน</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high rounded-full mx-2 transition-all duration-200 ease-in-out flex items-center px-4 py-3 gap-3" href="assignments.html"><span class="material-symbols-outlined" data-icon="assignment_turned_in">assignment_turned_in</span><span class="font-label-lg text-label-lg">งานและการสอบ</span></a>
+<a class="bg-primary-container text-on-primary-container font-bold rounded-full mx-2 transition-all duration-200 ease-in-out flex items-center px-4 py-3 gap-3 shadow-sm" href="files.html">
+<span class="material-symbols-outlined" data-icon="folder_open" data-weight="fill">folder_open</span>
+<span class="font-label-lg text-label-lg">จัดการไฟล์</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high rounded-full mx-2 transition-all duration-200 ease-in-out flex items-center px-4 py-3 gap-3" href="settings.html"><span class="material-symbols-outlined" data-icon="settings">settings</span><span class="font-label-lg text-label-lg">ตั้งค่า</span></a>
+</div>
+</nav>
+<!-- NavigationDrawer (Desktop) -->
+<nav class="h-full w-72 fixed left-0 top-0 hidden md:flex flex-col bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant shadow-sm z-30">
+<div class="px-6 py-8">
+<h1 class="font-title-lg text-title-lg text-primary tracking-tight">StudySync AI</h1>
+</div>
+<div class="flex flex-col py-lg space-y-base flex-1 overflow-y-auto px-4">
+<a class="text-on-surface-variant hover:bg-surface-container-high rounded-full mx-2 hover:bg-secondary-container dark:hover:bg-secondary-fixed-dim transition-all duration-200 ease-in-out flex items-center px-4 py-3 gap-3" href="dashboard.html"><span class="material-symbols-outlined" data-icon="dashboard">dashboard</span><span class="font-label-lg text-label-lg">แผงควบคุม</span></a>
+<a class="text-on-surface-variant hover:bg-surface-container-high rounded-full mx-2 hover:bg-secondary-container dark:hover:bg-secondary-fixed-dim transition-all duration-200 ease-in-out flex items-center px-4 py-3 gap-3" href="study_logs.html">
+<span class="material-symbols-outlined" data-icon="event_note">event_note</span>
+<span class="font-label-lg text-label-lg">บันทึกการเรียน</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high rounded-full mx-2 hover:bg-secondary-container dark:hover:bg-secondary-fixed-dim transition-all duration-200 ease-in-out flex items-center px-4 py-3 gap-3" href="assignments.html"><span class="material-symbols-outlined" data-icon="assignment_turned_in">assignment_turned_in</span><span class="font-label-lg text-label-lg">งานและการสอบ</span></a>
+<a class="bg-primary-container text-on-primary-container font-bold rounded-full mx-2 transition-all duration-200 ease-in-out flex items-center px-4 py-3 gap-3 shadow-sm" href="files.html">
+<span class="material-symbols-outlined" data-icon="folder_open" data-weight="fill">folder_open</span>
+<span class="font-label-lg text-label-lg">จัดการไฟล์</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high rounded-full mx-2 hover:bg-secondary-container dark:hover:bg-secondary-fixed-dim transition-all duration-200 ease-in-out flex items-center px-4 py-3 gap-3" href="settings.html"><span class="material-symbols-outlined" data-icon="settings">settings</span><span class="font-label-lg text-label-lg">ตั้งค่า</span></a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-72 flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline flex justify-between items-center px-4 md:px-gutter h-16 z-40">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-primary dark:text-primary-fixed-dim p-2 active:bg-surface-container-high rounded-full transition-colors" onclick="toggleDrawer()">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<div class="hidden md:flex items-center gap-2 text-on-surface-variant font-label-lg text-label-lg">
+<span class="">StudySync AI</span>
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+<span class="text-on-surface font-semibold">จัดการไฟล์</span>
+</div>
+<h1 class="md:hidden font-title-lg text-title-lg font-bold text-primary dark:text-primary-fixed-dim">จัดการไฟล์</h1>
+</div>
+<div class="flex items-center gap-2 md:gap-4">
+<button class="bg-primary text-on-primary hover:bg-primary-fixed-variant transition-colors flex items-center gap-2 px-3 py-2 md:px-4 md:py-2 rounded-full font-label-lg text-label-lg shadow-sm active:scale-95 touch-manipulation">
+<span class="material-symbols-outlined text-[20px] md:text-sm" data-icon="upload">upload</span>
+<span class="hidden sm:inline">อัปโหลดใหม่</span>
+</button>
+<div class="h-9 w-9 md:h-8 md:w-8 rounded-full bg-secondary-container overflow-hidden flex items-center justify-center cursor-pointer border border-outline-variant">
+<img alt="รูปโปรไฟล์ผู้ใช้" class="object-cover w-full h-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCc6C2PvUBmpvG6zezgYnY1pOJkaXoeANNK1D8hoxK0ZP8IQhjefDbF2Axf9Gc920MHh2ExapdkdhtcRmA3OAXRJ6xkll5POvB21cNp9wVE8GrhitAojkZeav5e52APtJy169SZ8GeUuWPT3pOw2u6HRT3mnbb2VS2ReIDER2WXunH6c2ztOgUF89cdnQGqPvCUc-crK-lW2zt8siSmyXihERbNTjTCbkgEy0Pr_I0wdOBLQ9DW4Fw3O-5ElnmeNsFZgZ5PDltcRPE4">
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<div class="flex-1 p-4 md:p-margin-desktop bg-surface-container-lowest flex flex-col gap-6 md:gap-8 overflow-x-hidden">
+<!-- Folders Section -->
+<section>
+<h2 class="font-title-lg text-title-lg text-on-surface mb-4">เข้าถึงด่วน</h2>
+<div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+<button class="group flex flex-col p-4 bg-surface rounded-xl border border-outline-variant shadow-sm hover:shadow-md hover:border-primary-container transition-all duration-200 text-left min-h-[120px]">
+<div class="flex justify-between items-start mb-3">
+<div class="p-2 bg-tertiary-container rounded-lg text-on-primary-container">
+<span class="material-symbols-outlined text-[20px] md:text-base" data-icon="science">science</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary md:opacity-0 group-hover:opacity-100 transition-opacity" data-icon="more_vert">more_vert</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface mb-1 truncate w-full">ข้อมูลงานวิจัย</span>
+<span class="font-body-md text-body-md text-on-surface-variant text-xs md:text-sm">24 รายการ • 1.2 GB</span>
+</button>
+<button class="group flex flex-col p-4 bg-surface rounded-xl border border-outline-variant shadow-sm hover:shadow-md hover:border-primary-container transition-all duration-200 text-left min-h-[120px]">
+<div class="flex justify-between items-start mb-3">
+<div class="p-2 bg-primary-container rounded-lg text-on-primary-container">
+<span class="material-symbols-outlined text-[20px] md:text-base" data-icon="library_books">library_books</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary md:opacity-0 group-hover:opacity-100 transition-opacity" data-icon="more_vert">more_vert</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface mb-1 truncate w-full">วรรณกรรมปริทัศน์</span>
+<span class="font-body-md text-body-md text-on-surface-variant text-xs md:text-sm">156 รายการ • 450 MB</span>
+</button>
+<button class="group flex flex-col p-4 bg-surface rounded-xl border border-outline-variant shadow-sm hover:shadow-md hover:border-primary-container transition-all duration-200 text-left min-h-[120px]">
+<div class="flex justify-between items-start mb-3">
+<div class="p-2 bg-secondary-container rounded-lg text-on-secondary-container">
+<span class="material-symbols-outlined text-[20px] md:text-base" data-icon="bar_chart">bar_chart</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary md:opacity-0 group-hover:opacity-100 transition-opacity" data-icon="more_vert">more_vert</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface mb-1 truncate w-full">ส่งออกผลวิเคราะห์</span>
+<span class="font-body-md text-body-md text-on-surface-variant text-xs md:text-sm">8 รายการ • 3.4 GB</span>
+</button>
+<button class="group flex flex-col p-4 bg-surface rounded-xl border border-dashed border-outline hover:border-primary hover:bg-surface-container transition-all duration-200 text-center items-center justify-center min-h-[120px]">
+<span class="material-symbols-outlined text-outline group-hover:text-primary mb-2 text-[28px]" data-icon="add_circle">add_circle</span>
+<span class="font-label-lg text-label-lg text-on-surface-variant group-hover:text-primary text-sm">สร้างโฟลเดอร์</span>
+</button>
+</div>
+</section>
+<!-- File List Section -->
+<section class="flex-1 flex flex-col overflow-hidden">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+<h2 class="font-title-lg text-title-lg text-on-surface">ไฟล์ทั้งหมด</h2>
+<div class="flex items-center gap-2 bg-surface-container-low border border-outline-variant rounded-full px-4 py-2 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all w-full sm:w-64">
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="search">search</span>
+<input class="bg-transparent border-none outline-none focus:ring-0 text-sm font-body-md text-on-surface w-full placeholder-on-surface-variant" placeholder="ค้นหาไฟล์..." type="text">
+</div>
+</div>
+<div class="bg-surface rounded-xl border border-outline-variant shadow-sm overflow-hidden flex-1 flex flex-col">
+<div class="file-table-container overflow-x-auto w-full">
+<table class="w-full text-left border-collapse min-w-[500px] md:min-w-full">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant text-on-surface-variant font-label-lg text-label-lg">
+<th class="py-3 px-4 font-medium w-auto sm:w-1/2">ชื่อไฟล์</th>
+<th class="py-3 px-4 font-medium whitespace-nowrap">แก้ไขล่าสุด</th>
+<th class="py-3 px-4 font-medium">ขนาด</th>
+<th class="py-3 px-4 font-medium text-right">จัดการ</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface divide-y divide-surface-variant">
+<tr class="hover:bg-surface-container-lowest transition-colors group cursor-pointer active:bg-surface-container">
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-error" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span class="truncate max-w-[150px] sm:max-w-none">วิเคราะห์กลุ่มประชากร_Q3_สมบูรณ์.pdf</span>
+</div>
+</td>
+<td class="py-4 px-4 text-on-surface-variant whitespace-nowrap text-sm sm:text-base">24 ต.ค. 2023</td>
+<td class="py-4 px-4 text-on-surface-variant whitespace-nowrap text-sm sm:text-base">2.4 MB</td>
+<td class="py-4 px-4 text-right">
+<div class="flex justify-end gap-1">
+<button class="text-on-surface-variant hover:text-primary p-2 rounded-full hover:bg-surface-container md:opacity-0 group-hover:opacity-100 transition-all touch-manipulation" title="ดาวน์โหลด">
+<span class="material-symbols-outlined text-lg" data-icon="download">download</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary p-2 rounded-full hover:bg-surface-container md:opacity-0 group-hover:opacity-100 transition-all touch-manipulation" title="เพิ่มเติม">
+<span class="material-symbols-outlined text-lg" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors group cursor-pointer active:bg-surface-container">
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container" data-icon="description">description</span>
+<span class="truncate max-w-[150px] sm:max-w-none">ร่างระเบียบวิธีวิจัย_v2.docx</span>
+</div>
+</td>
+<td class="py-4 px-4 text-on-surface-variant whitespace-nowrap text-sm sm:text-base">22 ต.ค. 2023</td>
+<td class="py-4 px-4 text-on-surface-variant whitespace-nowrap text-sm sm:text-base">845 KB</td>
+<td class="py-4 px-4 text-right">
+<div class="flex justify-end gap-1">
+<button class="text-on-surface-variant hover:text-primary p-2 rounded-full hover:bg-surface-container md:opacity-0 group-hover:opacity-100 transition-all touch-manipulation" title="ดาวน์โหลด">
+<span class="material-symbols-outlined text-lg" data-icon="download">download</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary p-2 rounded-full hover:bg-surface-container md:opacity-0 group-hover:opacity-100 transition-all touch-manipulation" title="เพิ่มเติม">
+<span class="material-symbols-outlined text-lg" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors group cursor-pointer active:bg-surface-container">
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary-container" data-icon="table_view">table_view</span>
+<span class="truncate max-w-[150px] sm:max-w-none">ข้อมูลผู้เข้าร่วมแบบไม่ระบุตัวตน.xlsx</span>
+</div>
+</td>
+<td class="py-4 px-4 text-on-surface-variant whitespace-nowrap text-sm sm:text-base">20 ต.ค. 2023</td>
+<td class="py-4 px-4 text-on-surface-variant whitespace-nowrap text-sm sm:text-base">14.2 MB</td>
+<td class="py-4 px-4 text-right">
+<div class="flex justify-end gap-1">
+<button class="text-on-surface-variant hover:text-primary p-2 rounded-full hover:bg-surface-container md:opacity-0 group-hover:opacity-100 transition-all touch-manipulation" title="ดาวน์โหลด">
+<span class="material-symbols-outlined text-lg" data-icon="download">download</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary p-2 rounded-full hover:bg-surface-container md:opacity-0 group-hover:opacity-100 transition-all touch-manipulation" title="เพิ่มเติม">
+<span class="material-symbols-outlined text-lg" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-2 pb-safe md:hidden bg-surface dark:bg-surface-dim border-t border-outline-variant shadow-lg rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest active:scale-95 transition-transform w-full py-2" href="dashboard.html">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm mt-1">หน้าแรก</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest active:scale-95 transition-transform w-full py-2" href="study_logs.html">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-sm text-label-sm mt-1">บันทึก</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest active:scale-95 transition-transform w-full py-2" href="assignments.html"><span class="material-symbols-outlined" data-icon="task_alt">task_alt</span><span class="font-label-sm text-label-sm mt-1">งานและการสอบ</span></a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-2xl px-4 py-1 active:scale-95 transition-transform w-full" href="files.html">
+<span class="material-symbols-outlined" data-icon="drive_file_move" data-weight="fill">drive_file_move</span>
+<span class="font-label-sm text-label-sm font-bold mt-1">จัดการไฟล์</span>
+</a>
+</nav>
+<script>
+    function toggleDrawer() {
+        const body = document.body;
+        const isOpen = body.classList.contains('drawer-open');
+        if (isOpen) {
+            body.classList.remove('drawer-open');
+        } else {
+            body.classList.add('drawer-open');
+        }
+    }
+</script>
+
+
+
+
+</body></html>
