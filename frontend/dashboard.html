@@ -124,84 +124,55 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./supabase_client.js"></script>
 </head>
-<body class="bg-background text-on-background font-body-lg text-body-lg min-h-screen flex pb-20 md:pb-0">
+<body class="bg-background text-on-background font-body-lg min-h-screen flex overflow-x-hidden">
 <!-- Mobile Overlay -->
-<div class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden" id="mobile-overlay" onclick="toggleSidebar()"></div>
-<!-- SideNavBar -->
-<nav class="nav-sidebar h-screen w-64 fixed left-0 top-0 bg-surface-container dark:bg-surface-container-low border-r border-outline-variant dark:border-outline shadow-sm dark:shadow-none z-40 lg:translate-x-0" id="sidebar">
-<div class="flex flex-col h-full py-lg">
-<div class="px-6 mb-8 flex items-center justify-between">
-<div class="flex items-center gap-3">
-<img alt="โลโก้องค์กร" class="w-10 h-10 rounded-lg object-cover" data-alt="โลโก้แนวเรขาคณิตที่สะอาดตาและทันสมัย" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-N9fQUe3FA1ovieTGHQ7Pvflfg2rbfMLq7L4VOVkkdi-YCvTIooY3tHQBDwm5zlQN5-WvCQ6Cp5SPMNv2YYpPasExDbzg3DtWFaUWFUsGNjlOABu0WX4mMsOSU5WiQ8mqDc5r0lQkzhpCxrx0FRh8OXCVysfLa-0SLpzdqcpxSIurUD7Nso30HoGwg3_qfAFlVctawXuw0_Z_H4cpOpaipmPlNaaAuqkVWjMn4EGFkOI1DZRpGR3P7NJrx_wNadkPjWBM1AODBMzD">
-<div>
-<h1 class="font-headline-lg text-headline-lg font-black text-primary dark:text-primary-fixed text-xl leading-none">StudySync AI</h1>
-<span class="font-label-sm text-label-sm text-on-surface-variant">แพลตฟอร์มจัดการการเรียน</span>
-</div>
-</div>
-<button class="lg:hidden text-on-surface-variant p-1" onclick="toggleSidebar()">
-<span class="material-symbols-outlined">close</span>
-</button>
-</div>
-<ul class="flex flex-col gap-1 w-full flex-grow">
-<li class="">
-<a class="flex items-center gap-3 px-4 py-3 text-primary dark:text-primary-fixed-dim bg-primary-container/10 border-l-4 border-primary dark:border-primary-fixed-dim font-label-lg text-label-lg transition-all duration-200 ease-in-out active:scale-95" href="dashboard.html">
-<span class="material-symbols-outlined">dashboard</span>
-                        แผงควบคุม
-                    </a>
-</li>
-<li class="">
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-high font-label-lg text-label-lg transition-all duration-200 ease-in-out active:scale-95" href="study_logs.html">
-<span class="material-symbols-outlined">assignment</span>
-                        บันทึกการเรียน
-                    </a>
-</li>
-<li class="">
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-high font-label-lg text-label-lg transition-all duration-200 ease-in-out active:scale-95" href="assignments.html"><span class="material-symbols-outlined">task_alt</span>
-                        งานและการสอบ</a>
-</li>
-<li class="">
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-high font-label-lg text-label-lg transition-all duration-200 ease-in-out active:scale-95" href="files.html">
-<span class="material-symbols-outlined">folder</span>
-                        จัดการไฟล์
-                    </a>
-</li>
-<li class="">
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-high font-label-lg text-label-lg transition-all duration-200 ease-in-out active:scale-95" href="settings.html">
-<span class="material-symbols-outlined">settings</span>
-                        ตั้งค่า
-                    </a>
-</li>
-</ul>
-</div>
+<div class="fixed inset-0 bg-black/50 z-30 hidden" id="mobile-overlay" onclick="toggleMenu()"></div>
+
+<nav class="bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant shadow-sm h-full w-72 fixed left-0 top-0 transition-transform duration-300 -translate-x-full md:translate-x-0 flex flex-col py-lg space-y-base z-[70]" id="mobile-drawer">
+    <div class="px-gutter mb-lg flex justify-between items-center">
+        <span class="font-title-lg text-title-lg text-primary">เมนูนำทาง</span>
+        <button class="md:hidden text-on-surface-variant p-xs rounded-full hover:bg-surface-container-high" onclick="toggleMenu()">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+    </div>
+    
+    <a class="flex items-center px-lg py-sm font-label-lg text-label-lg bg-primary-container text-on-primary-container font-bold rounded-full mx-2 transition-all duration-200 ease-in-out" href="dashboard.html">
+        <span class="material-symbols-outlined mr-md" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+        แผงควบคุม
+    </a>
+    <a class="flex items-center px-lg py-sm font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high rounded-full mx-2 hover:bg-secondary-container dark:hover:bg-secondary-fixed-dim transition-all duration-200 ease-in-out" href="study_logs.html">
+        <span class="material-symbols-outlined mr-md">event_note</span>
+        บันทึกการเรียน
+    </a>
+    <a class="flex items-center px-lg py-sm font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high rounded-full mx-2 hover:bg-secondary-container dark:hover:bg-secondary-fixed-dim transition-all duration-200 ease-in-out" href="assignments.html"><span class="material-symbols-outlined mr-md">assignment_turned_in</span>
+        งานและการสอบ
+    </a>
+    <a class="flex items-center px-lg py-sm font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high rounded-full mx-2 hover:bg-secondary-container dark:hover:bg-secondary-fixed-dim transition-all duration-200 ease-in-out" href="files.html"><span class="material-symbols-outlined mr-md">folder_open</span>จัดการไฟล์</a>
+    <a class="flex items-center px-lg py-sm font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high rounded-full mx-2 hover:bg-secondary-container dark:hover:bg-secondary-fixed-dim transition-all duration-200 ease-in-out mt-auto" href="settings.html">
+        <span class="material-symbols-outlined mr-md">settings</span>
+        ตั้งค่า
+    </a>
 </nav>
-<!-- TopNavBar -->
-<header class="top-navbar fixed top-0 right-0 w-[calc(100%-16rem)] h-16 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline shadow-sm z-30 transition-all duration-300">
-<div class="flex justify-between items-center px-4 md:px-margin-desktop w-full h-full">
-<div class="flex items-center gap-4 flex-1">
-<button class="lg:hidden text-on-surface-variant p-2 hover:bg-surface-variant rounded-full" onclick="toggleSidebar()">
-<span class="material-symbols-outlined">menu</span>
-</button>
-<div class="relative w-full max-w-xs focus-within:ring-2 focus-within:ring-primary rounded-full transition-all hidden sm:block">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-<input class="w-full pl-10 pr-4 py-2 bg-surface-container rounded-full border-none focus:ring-0 font-body-md text-body-md text-on-surface placeholder-on-surface-variant" placeholder="ค้นหาข้อมูล..." type="text">
-</div>
-<button class="sm:hidden text-on-surface-variant p-2">
-<span class="material-symbols-outlined">search</span>
-</button>
-</div>
-<div class="flex items-center gap-1 sm:gap-2">
-<button class="text-on-surface-variant hover:bg-surface-variant dark:hover:bg-on-surface-variant/10 rounded-full p-2 transition-all" title="การแจ้งเตือน">
-<span class="material-symbols-outlined">notifications</span>
-</button>
-<button class="text-on-surface-variant hover:bg-surface-variant dark:hover:bg-on-surface-variant/10 rounded-full p-2 transition-all hidden sm:block" title="ความช่วยเหลือ">
-<span class="material-symbols-outlined">help_outline</span>
-</button>
-<img alt="รูปโปรไฟล์ผู้ใช้" class="w-8 h-8 rounded-full ml-2 sm:ml-4 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCm9nHWAf1jKBJA6hCpEYBQl6uz9KF5v200bM2nqCyhiBwOo5xP6BfiRcbUKspib2QWIZDW8koTPQE5l8E1BeCQQAV666Aud5LielIMfSycggPIvhvdJuARtEHr278qEP5rH9TM0v3GUgOIS74ISYO1n-CI4ycZlgshsCvwDBz-zT1I1zSWFyi06t4isqVkgV9r0S1ram7ylscXwMQ5SHAjgJd389nlKuA_YLxbEGF-3os-lU0WLdu4Lc5piu8Rhpa_ZL7F3rpt_hgs">
-</div>
-</div>
-</header>
-<!-- Main Content Canvas -->
-<main class="main-content ml-64 mt-16 p-4 md:p-margin-desktop w-full max-w-[1440px] mx-auto min-h-[calc(100vh-64px)] transition-all duration-300">
+
+<!-- Main Content Wrapper -->
+<div class="flex-1 md:ml-72 flex flex-col min-h-screen w-full">
+    <!-- Top App Bar -->
+    <header class="bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline w-full top-0 sticky flex justify-between items-center px-gutter h-16 z-40">
+        <div class="flex items-center">
+            <button class="md:hidden text-primary dark:text-primary-fixed-dim hover:bg-surface-container dark:hover:bg-surface-container-high transition-colors p-xs rounded-full mr-sm active:opacity-80 transition-opacity" onclick="toggleMenu()">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+            <h1 class="font-display-lg text-display-lg font-bold text-primary dark:text-primary-fixed-dim text-[20px] md:text-[24px] leading-tight">StudySync AI</h1>
+        </div>
+        <div class="flex items-center">
+            <div class="w-[32px] h-[32px] rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center font-label-lg text-label-lg cursor-pointer hover:bg-surface-container dark:hover:bg-surface-container-high transition-colors">
+                <span class="material-symbols-outlined text-[20px]">person</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Canvas -->
+    <main class="flex-1 p-margin-mobile md:p-margin-desktop w-full mx-auto overflow-x-hidden pb-24 md:pb-lg">
 <header class="mb-8">
 <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">ยินดีต้อนรับกลับ, สมใจ</h2>
 <p class="font-body-lg text-body-lg text-on-surface-variant">นี่คือภาพรวมของแผนการศึกษาและงานที่คุณกำลังดำเนินการอยู่</p>
@@ -359,35 +330,19 @@
 </div>
 </div>
 </main>
-<!-- Bottom NavBar (Mobile) -->
-<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-2 pb-safe lg:hidden bg-surface dark:bg-surface-dim border-t border-outline-variant shadow-lg rounded-t-xl">
-<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-2xl px-4 py-1 active:scale-95 transition-transform w-full" href="dashboard.html">
-<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">home</span>
-<span class="font-label-sm text-label-sm font-bold mt-1">หน้าแรก</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest active:scale-95 transition-transform w-full py-2" href="study_logs.html">
-<span class="material-symbols-outlined mb-1">calendar_today</span>
-<span class="font-label-sm text-label-sm mt-1">บันทึก</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest active:scale-95 transition-transform w-full py-2" href="assignments.html">
-<span class="material-symbols-outlined mb-1">task_alt</span>
-<span class="font-label-sm text-label-sm mt-1">งานและการสอบ</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest active:scale-95 transition-transform w-full py-2" href="files.html">
-<span class="material-symbols-outlined mb-1">drive_file_move</span>
-<span class="font-label-sm text-label-sm mt-1">จัดการไฟล์</span>
-</a>
-</nav>
+</div>
 <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('mobile-overlay');
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('hidden');
+    function toggleMenu() {
+        const drawer = document.getElementById('mobile-drawer');
+        const overlay = document.getElementById('mobile-overlay');
+        
+        if (drawer.classList.contains('-translate-x-full')) {
+            drawer.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+        } else {
+            drawer.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
         }
-    </script>
-
-
-
-
+    }
+</script>
 </body></html>
