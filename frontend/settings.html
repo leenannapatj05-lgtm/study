@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html class="light" lang="th">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ตั้งค่า - StudySync AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#727785",
+                        "tertiary-fixed": "#9cf0ff",
+                        "primary-fixed-dim": "#adc7ff",
+                        "inverse-primary": "#adc7ff",
+                        "primary": "#005bbf",
+                        "inverse-on-surface": "#f3f0ef",
+                        "surface-dim": "#dcd9d9",
+                        "on-tertiary-fixed-variant": "#004f58",
+                        "on-tertiary-container": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#006875",
+                        "surface-variant": "#e5e2e1",
+                        "surface-container-high": "#eae7e7",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "tertiary-fixed-dim": "#00daf3",
+                        "on-primary-container": "#ffffff",
+                        "surface-container": "#f0eded",
+                        "surface-bright": "#fcf9f8",
+                        "error": "#ba1a1a",
+                        "on-secondary-container": "#616363",
+                        "secondary": "#5d5f5f",
+                        "on-secondary-fixed-variant": "#454747",
+                        "on-surface": "#1b1b1c",
+                        "primary-container": "#1a73e8",
+                        "surface-tint": "#005bc0",
+                        "outline-variant": "#c1c6d6",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#303030",
+                        "on-surface-variant": "#414754",
+                        "tertiary-container": "#008392",
+                        "surface-container-low": "#f6f3f2",
+                        "secondary-container": "#dfe0e0",
+                        "on-primary-fixed-variant": "#004493",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#1b1b1c",
+                        "primary-fixed": "#d8e2ff",
+                        "secondary-fixed": "#e2e2e2",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "on-tertiary-fixed": "#001f24",
+                        "background": "#fcf9f8",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface": "#fcf9f8",
+                        "on-primary-fixed": "#001a41"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "sm": "8px",
+                        "margin-mobile": "16px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "margin-desktop": "32px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Kanit"],
+                        "display-lg": ["Kanit"],
+                        "title-lg": ["Kanit"],
+                        "label-lg": ["Kanit"],
+                        "body-md": ["Kanit"],
+                        "body-lg": ["Kanit"],
+                        "label-sm": ["Kanit"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "0px", "fontWeight": "500"}],
+                        "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "600"}],
+                        "title-lg": ["22px", {"lineHeight": "28px", "letterSpacing": "0px", "fontWeight": "500"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.25px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0.5px", "fontWeight": "400"}],
+                        "label-sm": ["11px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Kanit', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #c1c6d6; border-radius: 10px; }
+        
+        .ai-glow {
+            position: relative;
+        }
+        .ai-glow::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: linear-gradient(45deg, #005bbf, #00daf3, #9cf0ff);
+            z-index: -1;
+            border-radius: inherit;
+            opacity: 0.3;
+            filter: blur(4px);
+        }
+
+        /* Toggle Switch Styling */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 32px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #dfe0e0;
+            transition: .4s;
+            border-radius: 34px;
+            border: 2px solid #727785;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px; width: 20px;
+            left: 4px; bottom: 4px;
+            background-color: #727785;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: #1a73e8; border-color: #1a73e8; }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+            background-color: #ffffff;
+        }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+
+        #mobile-drawer-overlay.hidden {
+            display: none !important;
+            pointer-events: none !important;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col pb-20 md:pb-0">
+<!-- Mobile Drawer Overlay -->
+<div class="fixed inset-0 bg-black/50 z-[60] hidden" id="mobile-drawer-overlay" onclick="toggleDrawer()"></div>
+
+<!-- Mobile Navigation Drawer -->
+<nav class="fixed inset-y-0 left-0 w-[280px] bg-surface-container border-r border-outline-variant z-[70] md:hidden flex flex-col py-lg shadow-xl -translate-x-full transition-transform duration-300" id="mobile-drawer">
+<div class="px-md mb-xl flex justify-between items-center">
+<div>
+<h1 class="font-headline-lg text-headline-lg font-black text-primary">StudySync AI</h1>
+<p class="text-label-sm text-on-surface-variant px-xs">แพลตฟอร์มจัดการการเรียน</p>
+</div>
+<button class="p-2 rounded-full hover:bg-surface-container-high" onclick="toggleDrawer()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex flex-col flex-1 overflow-y-auto space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors" href="dashboard.html">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-lg text-label-lg">แดชบอร์ด</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors" href="study_logs.html">
+<span class="material-symbols-outlined" data-icon="assignment">assignment</span>
+<span class="font-label-lg text-label-lg">บันทึกการเรียน</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors" href="assignments.html">
+<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
+<span class="font-label-lg text-label-lg">งาน</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors" href="files.html">
+<span class="material-symbols-outlined" data-icon="folder">folder</span>
+<span class="font-label-lg text-label-lg">ไฟล์</span>
+</a>
+<!-- Active Tab: Settings -->
+<a class="flex items-center gap-3 px-4 py-3 text-primary bg-primary-container/10 border-l-4 border-primary" href="settings.html">
+<span class="material-symbols-outlined" data-icon="settings" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-label-lg text-label-lg">ตั้งค่า</span>
+</a>
+</div>
+</nav>
+
+<!-- Sidebar (SideNavBar Anchor) -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container border-r border-outline-variant flex flex-col py-lg z-30 hidden md:flex">
+<div class="px-md mb-xl">
+<h1 class="font-headline-lg text-headline-lg font-black text-primary">StudySync AI</h1>
+<p class="text-label-sm text-on-surface-variant px-xs">แพลตฟอร์มจัดการการเรียน</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors" href="dashboard.html">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-lg text-label-lg">แดชบอร์ด</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors" href="study_logs.html">
+<span class="material-symbols-outlined" data-icon="assignment">assignment</span>
+<span class="font-label-lg text-label-lg">บันทึกการเรียน</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors" href="assignments.html">
+<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
+<span class="font-label-lg text-label-lg">งาน</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors" href="files.html">
+<span class="material-symbols-outlined" data-icon="folder">folder</span>
+<span class="font-label-lg text-label-lg">ไฟล์</span>
+</a>
+<!-- Active Tab: Settings -->
+<a class="flex items-center gap-3 px-4 py-3 text-primary bg-primary-container/10 border-l-4 border-primary" href="settings.html">
+<span class="material-symbols-outlined" data-icon="settings" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-label-lg text-label-lg">ตั้งค่า</span>
+</a>
+</nav>
+<div class="mt-auto px-md pt-lg border-t border-outline-variant">
+<div class="flex items-center gap-3 p-2 rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container" onclick="location.href='settings.html'">
+<img class="w-10 h-10 rounded-full border-2 border-primary/20 object-cover" alt="รูปโปรไฟล์นักเรียน" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVZEpaNvk6oYxUlTSmB2R6XzrZWHuXCaWpl76zv6wdO4HESkjcLSaRgUik22hZrwYRpa1SjAH-VetGOFsfjuA-HYlmJeVI3_lLU3tQKZBoUupGdzmQ7kq4TdtvJ8BHZpyYsC-z6yug5jpIdyAmGng2XKv40X_0U_ofHmVcZni1ph2ZbEMvokN6M_qLs79iBpIqAhW-Ufc1a-mQ4MLm3CxxvEQrH0UWp2C1QKFaPXMyADdanOL5nf94cjpiyeVWl5LxGpsow-U3tUk9"/>
+<div class="overflow-hidden">
+<p class="font-label-lg text-label-lg truncate">นักเรียน (Demo)</p>
+<p class="text-xs text-on-surface-variant truncate">ชั้น ม.6</p>
+</div>
+</div>
+</div>
+</aside>
+
+<!-- Top Navigation -->
+<header class="fixed top-0 right-0 w-full md:w-[calc(100%-16rem)] h-16 bg-surface border-b border-outline-variant flex justify-between items-center px-4 md:px-margin-desktop z-40">
+<div class="flex items-center gap-2 md:gap-lg">
+<button class="md:hidden text-on-surface-variant p-2 active:bg-surface-container-high rounded-full transition-colors mr-2 cursor-pointer" onclick="toggleDrawer()">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h2 class="font-title-lg text-title-lg font-bold text-on-surface hidden sm:block">ตั้งค่า</h2>
+<div class="relative w-60 sm:w-80">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input id="searchSettingInput" oninput="filterSettingsSearch(this.value)" class="w-full bg-surface-container-lowest border-outline-variant rounded-full pl-10 pr-4 py-1.5 focus:ring-2 focus:ring-primary focus:outline-none text-body-md" placeholder="ค้นหาการตั้งค่า..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<button onclick="alert('ไม่มีการแจ้งเตือนใหม่ในขณะนี้')" class="hover:bg-surface-variant rounded-full p-2 transition-all cursor-pointer" title="การแจ้งเตือน">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button onclick="alert('ศูนย์ช่วยเหลือ StudySync AI: หากมีข้อสงสัย สามารถอ่านคู่มือการติดตั้งได้ในไฟล์ DEPLOYMENT_GUIDE.md')" class="hover:bg-surface-variant rounded-full p-2 transition-all cursor-pointer" title="ช่วยเหลือ">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+</header>
+
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-16 min-h-screen bg-background pb-32 md:pb-24">
+<div class="max-w-4xl mx-auto p-4 md:p-margin-desktop space-y-lg">
+
+<!-- Section 1: User Profile -->
+<section id="secProfile" class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+<div class="flex items-center gap-lg mb-lg">
+<div class="relative group">
+<img id="userAvatarImg" class="w-24 h-24 rounded-full object-cover border-4 border-surface-container-high group-hover:opacity-80 transition-opacity" alt="ภาพโปรไฟล์ของนักเรียน" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC09N3kE1juF_1D1PTAQ1c5yxF4aVfEK_rXu0eF5KxCJaeQqX6lkDrFyQ-vPDS834RD6M15G9YYwn_A_TiIAIjGXAklyMxYE-FQJYfdozHmpeIyJGvRp0xWM7I_DydFPhS5mogd1GDgi1cUku3QfXIZXPu7T1o90Aa2JnwodnHnGGWFVS6REkVQdAgQz3ADfH6HlxHLFttEoyjxT7YF2FBmZGwQ8zhIVD5XoLGki5mxaaPstPUnDN-9q6I_yWcaUKaLDJj71fI6zcTt"/>
+<button onclick="changeProfilePhoto()" type="button" class="absolute bottom-0 right-0 bg-primary text-on-primary rounded-full p-1.5 shadow-lg border-2 border-surface-container-lowest cursor-pointer hover:bg-primary/90" title="เปลี่ยนรูปโปรไฟล์">
+<span class="material-symbols-outlined !text-lg" data-icon="edit">edit</span>
+</button>
+</div>
+<div>
+<h3 class="font-title-lg text-title-lg font-semibold">ข้อมูลส่วนตัว</h3>
+<p class="text-body-md text-on-surface-variant">จัดการข้อมูลพื้นฐานและการแสดงตัวตนของคุณ</p>
+</div>
+</div>
+<form id="profileForm" onsubmit="event.preventDefault(); saveProfileChanges();" class="space-y-lg">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="space-y-sm">
+<label class="font-label-lg text-label-lg text-on-surface-variant">ชื่อ-นามสกุล</label>
+<input id="userNameInput" class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 focus:border-primary focus:ring-1 focus:ring-primary outline-none font-body-md" type="text" value="สมใจ รักเรียน"/>
+</div>
+<div class="space-y-sm">
+<label class="font-label-lg text-label-lg text-on-surface-variant">อีเมล</label>
+<input id="userEmailInput" class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 focus:border-primary focus:ring-1 focus:ring-primary outline-none font-body-md" type="email" value="somrak.v@studysync.ai"/>
+</div>
+</div>
+<div class="flex justify-end">
+<button type="submit" class="bg-primary text-on-primary px-lg py-2 rounded-lg font-label-lg hover:bg-primary/90 transition-all active:scale-95 cursor-pointer shadow-sm">บันทึกการเปลี่ยนแปลง</button>
+</div>
+</form>
+</section>
+
+<!-- Grid Layout for Settings -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-lg">
+
+<!-- Section 2: Notification Settings -->
+<section id="secNotifications" class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm flex flex-col">
+<div class="flex items-center gap-sm mb-lg">
+<span class="material-symbols-outlined text-primary" data-icon="notifications_active">notifications_active</span>
+<h3 class="font-title-lg text-title-lg font-semibold">การแจ้งเตือน</h3>
+</div>
+<div class="space-y-lg flex-1">
+<div class="flex justify-between items-center">
+<div>
+<p class="font-label-lg text-label-lg">เตือนความจำการเรียน</p>
+<p class="text-xs text-on-surface-variant">รับการแจ้งเตือนเมื่อถึงเวลาศึกษาที่กำหนด</p>
+</div>
+<label class="switch">
+<input checked="" type="checkbox" onchange="alert('อัปเดตการเตือนความจำการเรียนเรียบร้อยแล้ว')"/>
+<span class="slider"></span>
+</label>
+</div>
+<div class="flex justify-between items-center">
+<div>
+<p class="font-label-lg text-label-lg">กำหนดส่งงาน</p>
+<p class="text-xs text-on-surface-variant">แจ้งเตือนล่วงหน้า 24 ชม. ก่อนถึงกำหนด</p>
+</div>
+<label class="switch">
+<input checked="" type="checkbox" onchange="alert('อัปเดตการแจ้งเตือนกำหนดส่งงานเรียบร้อยแล้ว')"/>
+<span class="slider"></span>
+</label>
+</div>
+<div class="flex justify-between items-center">
+<div>
+<p class="font-label-lg text-label-lg">การแจ้งเตือนการสอบ</p>
+<p class="text-xs text-on-surface-variant">อัปเดตตารางและสถานที่สอบทันที</p>
+</div>
+<label class="switch">
+<input type="checkbox" onchange="alert('อัปเดตการแจ้งเตือนการสอบเรียบร้อยแล้ว')"/>
+<span class="slider"></span>
+</label>
+</div>
+</div>
+</section>
+
+<!-- Section 3: System Preferences -->
+<section id="secTheme" class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm flex flex-col">
+<div class="flex items-center gap-sm mb-lg">
+<span class="material-symbols-outlined text-primary" data-icon="tune">tune</span>
+<h3 class="font-title-lg text-title-lg font-semibold">การตั้งค่าระบบ</h3>
+</div>
+<div class="space-y-lg">
+<div class="space-y-sm">
+<label class="font-label-lg text-label-lg text-on-surface-variant">ธีมของระบบ</label>
+<div class="grid grid-cols-2 gap-sm">
+<button id="lightThemeBtn" onclick="applyTheme('light')" type="button" class="flex items-center justify-center gap-2 border-2 border-primary bg-primary/5 rounded-lg py-3 text-primary font-label-lg cursor-pointer transition-all">
+<span class="material-symbols-outlined" data-icon="light_mode">light_mode</span>
+                                    โหมดสว่าง
+                                </button>
+<button id="darkThemeBtn" onclick="applyTheme('dark')" type="button" class="flex items-center justify-center gap-2 border border-outline-variant hover:bg-surface-container rounded-lg py-3 text-on-surface-variant font-label-lg cursor-pointer transition-all">
+<span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span>
+                                    โหมดมืด
+                                </button>
+</div>
+</div>
+<div class="space-y-sm">
+<label class="font-label-lg text-label-lg text-on-surface-variant">ภาษา</label>
+<select onchange="alert('เปลี่ยนภาษาเป็น: ' + this.value)" class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 focus:border-primary focus:ring-1 focus:ring-primary outline-none font-body-md cursor-pointer">
+<option selected="">ไทย (Thai)</option>
+<option>English (UK)</option>
+<option>English (US)</option>
+</select>
+</div>
+</div>
+</section>
+</div>
+
+<!-- Section 4: Account Security -->
+<section id="secSecurity" class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+<div class="flex items-center gap-sm mb-lg">
+<span class="material-symbols-outlined text-error" data-icon="security">security</span>
+<h3 class="font-title-lg text-title-lg font-semibold">ความปลอดภัย</h3>
+</div>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-lg bg-error-container/10 p-md rounded-lg border border-error/10">
+<div class="flex items-start gap-md">
+<span class="material-symbols-outlined text-error mt-1" data-icon="lock_reset">lock_reset</span>
+<div>
+<p class="font-label-lg text-label-lg font-bold">เปลี่ยนรหัสผ่าน</p>
+<p class="text-body-md text-on-surface-variant">เปลี่ยนรหัสผ่านเป็นประจำเพื่อความปลอดภัยสูงสุดของข้อมูลการเรียน</p>
+</div>
+</div>
+<button onclick="changePassword()" type="button" class="bg-error text-on-error px-lg py-2 rounded-lg font-label-lg hover:bg-error/90 transition-all cursor-pointer shadow-sm whitespace-nowrap">เปลี่ยนรหัสผ่าน</button>
+</div>
+<div class="mt-lg pt-lg border-t border-outline-variant">
+<div class="flex items-center justify-between">
+<div>
+<p class="font-label-lg text-label-lg">การยืนยันตัวตนแบบ 2 ขั้นตอน (2FA)</p>
+<p class="text-body-md text-on-surface-variant">เพิ่มความปลอดภัยอีกระดับให้กับบัญชีของคุณ</p>
+</div>
+<button onclick="setup2FA()" type="button" class="text-primary font-bold hover:underline cursor-pointer">ตั้งค่าเริ่มต้น</button>
+</div>
+</div>
+</section>
+
+<!-- AI Insight Rail Integration -->
+<div class="ai-glow bg-surface-container-high rounded-xl p-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-l-4 border-tertiary-fixed-dim">
+<div class="flex items-center gap-lg">
+<div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0">
+<span class="material-symbols-outlined text-tertiary" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg font-bold text-tertiary">การวิเคราะห์ด้วย AI</h4>
+<p class="text-body-md text-on-surface-variant">จากการวิเคราะห์ของคุณ คุณมักจะตอบสนองต่อการแจ้งเตือนในช่วงเช้า (8:00 - 10:00) ได้ดีที่สุด</p>
+</div>
+</div>
+<button onclick="improveScheduleAI()" type="button" class="text-primary flex items-center gap-2 font-label-lg group cursor-pointer shrink-0 hover:underline">
+                    ปรับปรุงตารางเรียน
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+
+</div>
+</main>
+
+<!-- Sticky Footer for Actions -->
+<div class="fixed bottom-20 md:bottom-0 right-0 w-full md:w-[calc(100%-16rem)] p-4 md:p-lg bg-surface/90 backdrop-blur-md border-t border-outline-variant flex flex-col md:flex-row justify-between items-center gap-4 z-40">
+<p class="text-xs text-on-surface-variant hidden md:block">แก้ไขล่าสุดเมื่อ: วันนี้</p>
+<div class="flex gap-md w-full md:w-auto justify-end">
+<button onclick="cancelSettings()" type="button" class="px-4 md:px-lg py-2 border border-outline text-on-surface rounded-lg font-label-lg hover:bg-surface-variant transition-all flex-1 md:flex-none cursor-pointer">ยกเลิก</button>
+<button onclick="confirmSettings()" type="button" class="px-6 md:px-xl py-2 bg-primary text-on-primary rounded-lg font-label-lg shadow-md hover:bg-primary/90 transition-all active:scale-95 flex-1 md:flex-none cursor-pointer">ยืนยัน</button>
+</div>
+</div>
+
+<!-- BottomNavBar (Mobile) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-2 pb-safe md:hidden bg-surface dark:bg-surface-dim border-t border-outline-variant shadow-lg rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest active:scale-95 transition-transform w-full py-2" href="dashboard.html">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm mt-1">หน้าแรก</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest active:scale-95 transition-transform w-full py-2" href="study_logs.html">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-sm text-label-sm mt-1">บันทึก</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest active:scale-95 transition-transform w-full py-2" href="assignments.html">
+<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
+<span class="font-label-sm text-label-sm mt-1">งานและการสอบ</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-2xl px-4 py-1 active:scale-95 transition-transform w-full" href="settings.html">
+<span class="material-symbols-outlined" data-icon="settings" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-label-sm text-label-sm font-bold mt-1">ตั้งค่า</span>
+</a>
+</nav>
+
+<script>
+    function toggleDrawer() {
+        const drawer = document.getElementById('mobile-drawer');
+        const overlay = document.getElementById('mobile-drawer-overlay');
+        if (!drawer || !overlay) return;
+
+        if (overlay.classList.contains('hidden')) {
+            overlay.classList.remove('hidden');
+            drawer.classList.remove('-translate-x-full');
+        } else {
+            overlay.classList.add('hidden');
+            drawer.classList.add('-translate-x-full');
+        }
+    }
+
+    function applyTheme(theme) {
+        const lightBtn = document.getElementById('lightThemeBtn');
+        const darkBtn = document.getElementById('darkThemeBtn');
+
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+            localStorage.setItem('theme', 'dark');
+
+            if (lightBtn && darkBtn) {
+                lightBtn.className = 'flex items-center justify-center gap-2 border border-outline-variant hover:bg-surface-container rounded-lg py-3 text-on-surface-variant font-label-lg cursor-pointer transition-all';
+                darkBtn.className = 'flex items-center justify-center gap-2 border-2 border-primary bg-primary/5 rounded-lg py-3 text-primary font-label-lg cursor-pointer transition-all';
+            }
+        } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+            localStorage.setItem('theme', 'light');
+
+            if (lightBtn && darkBtn) {
+                darkBtn.className = 'flex items-center justify-center gap-2 border border-outline-variant hover:bg-surface-container rounded-lg py-3 text-on-surface-variant font-label-lg cursor-pointer transition-all';
+                lightBtn.className = 'flex items-center justify-center gap-2 border-2 border-primary bg-primary/5 rounded-lg py-3 text-primary font-label-lg cursor-pointer transition-all';
+            }
+        }
+    }
+
+    function saveProfileChanges() {
+        const nameInput = document.getElementById('userNameInput');
+        const emailInput = document.getElementById('userEmailInput');
+        const name = nameInput ? nameInput.value.trim() : 'สมใจ รักเรียน';
+        const email = emailInput ? emailInput.value.trim() : 'somrak.v@studysync.ai';
+        alert(`บันทึกข้อมูลส่วนตัวเรียบร้อยแล้ว!\n\nชื่อ: ${name}\nอีเมล: ${email}`);
+    }
+
+    function changeProfilePhoto() {
+        const newUrl = prompt("ระบุ URL ของรูปโปรไฟล์ใหม่ของคุณ:", "https://lh3.googleusercontent.com/aida-public/AB6AXuC09N3kE1juF_1D1PTAQ1c5yxF4aVfEK_rXu0eF5KxCJaeQqX6lkDrFyQ-vPDS834RD6M15G9YYwn_A_TiIAIjGXAklyMxYE-FQJYfdozHmpeIyJGvRp0xWM7I_DydFPhS5mogd1GDgi1cUku3QfXIZXPu7T1o90Aa2JnwodnHnGGWFVS6REkVQdAgQz3ADfH6HlxHLFttEoyjxT7YF2FBmZGwQ8zhIVD5XoLGki5mxaaPstPUnDN-9q6I_yWcaUKaLDJj71fI6zcTt");
+        if (newUrl) {
+            const avatar = document.getElementById('userAvatarImg');
+            if (avatar) avatar.src = newUrl;
+            alert("เปลี่ยนรูปโปรไฟล์เรียบร้อยแล้ว!");
+        }
+    }
+
+    function changePassword() {
+        const pass = prompt("กรุณาระบุรหัสผ่านใหม่:");
+        if (pass && pass.length >= 6) {
+            alert("เปลี่ยนรหัสผ่านเรียบร้อยแล้ว!");
+        } else if (pass) {
+            alert("รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร");
+        }
+    }
+
+    function setup2FA() {
+        alert("กำลังเปิดใช้งานระบบยืนยันตัวตน 2 ขั้นตอน (2FA)\n\nระบบส่งรหัสยืนยันไปยังมือถือเรียบร้อยแล้ว!");
+    }
+
+    function improveScheduleAI() {
+        alert("AI ทำการวิเคราะห์การเรียนของคุณและปรับแต่งเวลาแจ้งเตือนบทเรียนเป็นช่วงเช้า 08:30 น. เรียบร้อยแล้ว!");
+    }
+
+    function cancelSettings() {
+        alert("ยกเลิกการเปลี่ยนตั้งค่าและรีเซ็ตกลับเป็นค่าเริ่มต้นแล้ว");
+        window.location.reload();
+    }
+
+    function confirmSettings() {
+        alert("บันทึกการตั้งค่าทั้งหมดเรียบร้อยแล้ว!");
+    }
+
+    function filterSettingsSearch(query) {
+        const q = String(query).toLowerCase().trim();
+        const sections = [
+            document.getElementById('secProfile'),
+            document.getElementById('secNotifications'),
+            document.getElementById('secTheme'),
+            document.getElementById('secSecurity')
+        ];
+        sections.forEach(sec => {
+            if (!sec) return;
+            if (!q || sec.innerText.toLowerCase().includes(q)) {
+                sec.style.display = '';
+            } else {
+                sec.style.display = 'none';
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        applyTheme(savedTheme);
+    });
+</script>
+</body>
+</html>
